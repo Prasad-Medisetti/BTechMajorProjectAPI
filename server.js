@@ -5,7 +5,7 @@ let morgan = require("morgan");
 
 let database = require("./database/db");
 
-const noteRoute = require("../server/routes/note.routes");
+const noteRoute = require("./routes/note.routes");
 
 require("dotenv").config();
 mongoose.Promise = global.Promise;
@@ -34,7 +34,15 @@ app.use(
 );
 app.use(cors());
 app.use(morgan("dev"));
+// define the first route
+
+app.get("/", function (req, res) {
+	res.send("<h1>Hello World!</h1>");
+});
+
 app.use("/notes", noteRoute);
+
+// 404 route
 app.use("*", (req, res) => {
 	res.status(404).json({ error: "Not Found" });
 });
