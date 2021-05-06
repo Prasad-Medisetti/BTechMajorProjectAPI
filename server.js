@@ -37,7 +37,7 @@ app.use(morgan("dev"));
 // define the first route
 
 app.get("/", function (req, res) {
-	res.send("<h1>Hello World!</h1>");
+	res.send("<h1>RESET API server for <code>ONLINE NOTICE PROJECT</code></h1>");
 });
 
 app.use("/notes", noteRoute);
