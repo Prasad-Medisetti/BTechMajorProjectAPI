@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset=utf-8 />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>ACADEMIC BULLETIN BOARD API</title>
+		<style>
+			body {
+				font-family: Roboto, Arial, sans-serif;
+				background: white;
+				min-height: 90vh;
+				display: flex;
+				justify-content: center;
+				align-content: center;
+				flex-direction: column;
+			}
+
+			hr {
+				border-top: 4px solid #455a64;
+				width: 100%;
+			}
+
+			#message {
+				text-align: center;
+				padding: 20px;
+				display: flex;
+				justify-content: center;
+				align-content: center;
+				flex-direction: column;
+			}
+
+			#message h1 {
+				font-weight: normal;
+			}
+
+			#message h1 {
+				padding: auto;
+			}
+
+			#message p {
+				margin: 10px 0 0;
+				color: #aaa;
+			}
+
+			#message .list {
+				display: flex;
+				justify-content: center;
+				align-content: center;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			#message .list li {
+				text-align: left;
+				list-style: none;
+				margin: 4px auto;
+				letter-spacing: .15em;
+				background-color: #455a64;
+				text-transform: uppercase;
+				font-family: monospace;
+				border-radius: 4px;
+			}
+
+			#message .list li a {
+				display: block;
+				text-align: center;
+				text-decoration: none;
+				padding: 8px 16px;
+				width: 20rem;
+				/* color: #222; */
+				color: #fafafa;
+			}
+
+			#message .list li a .http_method {}
+
+			#footer {
+				text-align: center;
+				margin-top: 100px;
+				font-size: 12px;
+				color: #aaa;
+			}
+
+			#footer a {
+				color: #aaa;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="message">
+			<h1>REST API for <code>ACADEMIC BULLETIN BOARD PROJECT</code></h1>
+			<hr>
+			<h3>End Points</h3>
+			<ul class="list">
+				<li><a href="/api/notes">/api/notes <span class="http_method">get</span> req</a></li>
+				<li><a href="/api/auth/signup">/api/auth/signup <span class="http_method">post</span> req</a></li>
+				<li><a href="/api/auth/signin">/api/auth/signin <span class="http_method">post</span> req</a></li>
+			</ul>
+		</div>
+	</body>
+
+</html>

@@ -1,7 +1,8 @@
 const express = require("express"),
-	mongoose = require("mongoose"),
-	cors = require("cors"),
-	morgan = require("morgan");
+	path = require("path");
+(mongoose = require("mongoose")),
+	(cors = require("cors")),
+	(morgan = require("morgan"));
 dotenv = require("dotenv");
 
 dotenv.config();
@@ -44,23 +45,17 @@ app.use(
 app.use(cors());
 app.use(morgan("dev"));
 
+/* -------------------- Use The Express Static Middleware ------------------- */
+app.use(express.static("public"));
+app.use("/static", express.static(path.join(__dirname, "public")));
+
 /* ------------------------------- Routes ------------------------------ */
 app.get("/", (req, res) => {
-	res.send(
-		`<h1>RESET API server for <code>ACADEMIC BULLETIN BOARD PROJECT</code></h1>`,
-	);
+	res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.get("/api", (req, res) => {
-	res.send(
-		`<h1>RESET API server for <code>ACADEMIC BULLETIN BOARD PROJECT</code></h1>
-		<h3>end points</h3>
-		<ul>
-			<li><a href="">/api/notes</a></li>
-			<li><a href="">/api/auth/signup</a></li>
-			<li><a href="">/api/auth/signin</a></li>
-		</ul>`,
-	);
+	res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.use("/api/notes", noteRoute);
@@ -69,7 +64,7 @@ app.use("/api/auth", authRoute);
 
 /* -------------------------------- 404 route ------------------------------- */
 app.use("*", (req, res) => {
-	res.status(404).json({ error: "Not Found" });
+	res.status(404).sendFile(path.join(__dirname, "./public/404.html"));
 });
 
 const port = process.env.PORT || 4000;
