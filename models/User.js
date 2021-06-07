@@ -8,4 +8,9 @@ const userSchema = new Schema({
 	date: { type: Date, default: Date.now },
 });
 
+userSchema.methods.toJSON = function () {
+	var obj = this.toObject();
+	delete obj.password;
+	return obj;
+};
 module.exports = mongoose.model("User", userSchema);
