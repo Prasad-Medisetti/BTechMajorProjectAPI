@@ -6,9 +6,15 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<title>ACADEMIC BULLETIN BOARD API</title>
 		<style>
-			body {
+			*,
+			*::after,
+			*::before {
+				box-sizing: border-box;
 
-				font-family: Roboto, Arial, sans-serif;
+				font-family: monospace;
+			}
+
+			body {
 				background: white;
 				min-height: 90vh;
 				display: flex;
@@ -17,39 +23,86 @@
 				flex-direction: column;
 			}
 
+			hr {
+				border-top: 4px solid #455a64;
+				width: 100%;
+			}
+
 			#message {
-				margin: 100px auto;
 				text-align: center;
-				padding: 20px;
+				display: flex;
+				justify-content: center;
+				align-content: center;
+				flex-direction: column;
+			}
+
+			#message div {
+				font-size: 16vw;
+				color: #e53935;
+				font-weight: bold;
+				font-family: Verdana, sans-serif;
 			}
 
 			#message h1 {
-				font-size: 60px;
+				color: #37474f;
 				font-weight: normal;
-				letter-spacing: -0.03em;
-				margin: 0 0 10px;
 			}
 
 			#message p {
-				margin: 10px 0 0;
-				color: #aaa;
+				margin: 10px 0;
+				line-height: 2rem;
+				color: #616161;
+				font-size: 1.15rem;
 			}
+
+			#message .list {
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-content: center;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			#message .list li {
+				list-style: none;
+				margin: 8px auto;
+				letter-spacing: .15em;
+				background-color: #455a64;
+				text-transform: uppercase;
+				font-family: monospace;
+				border-radius: 4px;
+			}
+
+			#message .list li a {
+				display: block;
+				text-align: center;
+				text-decoration: none;
+				padding: 1vh 1vw;
+				width: 90vw;
+				/* color: #222; */
+				color: #fafafa;
+			}
+
+			#message .list li a .http_method {}
 
 			#footer {
 				text-align: center;
 				margin-top: 100px;
 				font-size: 12px;
-				color: #aaa;
+				color: #fafafa;
 			}
 
 			#footer a {
-				color: #aaa;
+				color: #fafafa;
 			}
 		</style>
 	</head>
 
 	<body>
 		<div id="message">
+			<div>404</div>
 			<h1>Page Not Found</h1>
 			<p>Sorry, we were unable to find anything at this location.</p>
 		</div>
