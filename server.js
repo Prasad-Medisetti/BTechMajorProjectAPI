@@ -47,7 +47,19 @@ app.use(morgan("dev"));
 /* ------------------------------- Routes ------------------------------ */
 app.get("/", (req, res) => {
 	res.send(
-		"<p>RESET API server for <code>ONLINE NOTICE BOARD PROJECT </code></p>",
+		`<h1>RESET API server for <code>ACADEMIC BULLETIN BOARD PROJECT</code></h1>`,
+	);
+});
+
+app.get("/api", (req, res) => {
+	res.send(
+		`<h1>RESET API server for <code>ACADEMIC BULLETIN BOARD PROJECT</code></h1>
+		<h3>end points</h3>
+		<ul>
+			<li><a href="">/api/notes</a></li>
+			<li><a href="">/api/auth/signup</a></li>
+			<li><a href="">/api/auth/signin</a></li>
+		</ul>`,
 	);
 });
 
