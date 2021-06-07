@@ -1,10 +1,11 @@
-let mongoose = require("mongoose"),
+const mongoose = require("mongoose"),
 	express = require("express"),
 	router = express.Router();
 
-let note = require("../models/Note");
+const note = require("../models/Note");
+const verify = require("./verifyToken");
 
-router.route("/").get((req, res, next) => {
+router.get("/", verify, (req, res, next) => {
 	note.find((error, data) => {
 		if (error) {
 			return next(error);
@@ -14,7 +15,7 @@ router.route("/").get((req, res, next) => {
 	});
 });
 
-router.route("/").post((req, res, next) => {
+router.post("/", verify, (req, res, next) => {
 	note.create(req.body, (error, data) => {
 		if (error) {
 			return next(error);
@@ -25,7 +26,7 @@ router.route("/").post((req, res, next) => {
 	});
 });
 
-router.route("/:id").get((req, res, next) => {
+router.get("/:id", verify, (req, res, next) => {
 	note.findById(req.params.id, (error, data) => {
 		if (error) {
 			return next(error);
@@ -36,7 +37,7 @@ router.route("/:id").get((req, res, next) => {
 });
 
 // Update Student
-router.route("/:id").put((req, res, next) => {
+router.put("/:id", verify, (req, res, next) => {
 	note.findByIdAndUpdate(req.params.id, { ...req.body }, (error, data) => {
 		if (error) {
 			console.log(error);
@@ -49,7 +50,7 @@ router.route("/:id").put((req, res, next) => {
 	});
 });
 
-router.route("/:id").delete((req, res, next) => {
+router.delete("/:id", verify, (req, res, next) => {
 	note.findByIdAndRemove(req.params.id, (error, data) => {
 		if (error) {
 			return next(error);
