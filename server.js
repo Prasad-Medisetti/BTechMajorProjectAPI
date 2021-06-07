@@ -1,16 +1,24 @@
-let express = require("express");
-let mongoose = require("mongoose");
-let cors = require("cors");
-let morgan = require("morgan");
+const express = require("express"),
+	mongoose = require("mongoose"),
+	cors = require("cors"),
+	morgan = require("morgan");
+dotenv = require("dotenv");
 
-let database = require("./database/db");
+dotenv.config();
 
-const noteRoute = require("./routes/note.routes");
+/* ---------------------------- Import Database URL ---------------------------- */
+const database = require("./database/db");
 
+/* ---------------------------- Import Routes ---------------------------- */
+const authRoute = require("./routes/Auth"),
+	noteRoute = require("./routes/Note");
+
+/* ---------------------------- Env Configs ---------------------------- */
 require("dotenv").config();
 mongoose.Promise = global.Promise;
 mongoose.set("useFindAndModify", false);
 
+/* ----------------------------  Connect to DB---------------------------- */
 mongoose
 	.connect(database.db, {
 		useNewUrlParser: true,
@@ -25,6 +33,7 @@ mongoose
 		},
 	);
 
+/* ------------------------------- Route Middlewares ------------------------------ */
 const app = express();
 app.use(express.json());
 app.use(
@@ -34,22 +43,26 @@ app.use(
 );
 app.use(cors());
 app.use(morgan("dev"));
-// define the first route
 
-app.get("/", function (req, res) {
-	res.send("<p>RESET API server for <code>ONLINE NOTICE BOARD PROJECT </code></p>");
+/* ------------------------------- Routes ------------------------------ */
+app.get("/", (req, res) => {
+	res.send(
+		"<p>RESET API server for <code>ONLINE NOTICE BOARD PROJECT </code></p>",
+	);
 });
 
-app.use("/notes", noteRoute);
+app.use("/api/notes", noteRoute);
 
-// 404 route
+app.use("/api/auth", authRoute);
+
+/* -------------------------------- 404 route ------------------------------- */
 app.use("*", (req, res) => {
 	res.status(404).json({ error: "Not Found" });
 });
 
 const port = process.env.PORT || 4000;
 const server = app.listen(port, () => {
-	console.log("Connected to port " + port);
+	console.log("Server Up and Running on PORT " + port);
 });
 
 // // Error Handling

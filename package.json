@@ -5,16 +5,20 @@
 	"main": "server.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node server.js"
+		"start": "nodemon server.js"
 	},
-	"author": "",
+	"author": "Prasad Medisetti <prasadmedisetti34@gmail.com>",
 	"license": "ISC",
 	"dependencies": {
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
-		"dotenv": "^9.0.0",
+		"dotenv": "^10.0.0",
 		"express": "^4.17.1",
-		"mongoose": "^5.12.2",
+		"joi": "^17.4.0",
+		"mongoose": "^5.12.13",
 		"morgan": "^1.10.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.7"
 	}
 }

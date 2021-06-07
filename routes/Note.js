@@ -2,10 +2,10 @@ let mongoose = require("mongoose"),
 	express = require("express"),
 	router = express.Router();
 
-let note = require("../models/note-schema");
+let note = require("../models/Note");
 
-router.route("/").get((req, res) => {
-	note.find((error, data, next) => {
+router.route("/").get((req, res, next) => {
+	note.find((error, data) => {
 		if (error) {
 			return next(error);
 		} else {
