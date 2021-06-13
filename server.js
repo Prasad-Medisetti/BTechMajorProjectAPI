@@ -6,6 +6,17 @@ const express = require("express"),
 dotenv = require("dotenv");
 
 dotenv.config();
+/* ------------------------------- Middlewares ------------------------------ */
+const app = express();
+
+app.use(cors());
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(
+	express.urlencoded({
+		extended: true,
+	}),
+);
 
 /* ---------------------------- Import Database URL ---------------------------- */
 const database = require("./database/db");
@@ -34,17 +45,6 @@ mongoose
 			console.log("Database could not be connected : " + error);
 		},
 	);
-
-/* ------------------------------- Route Middlewares ------------------------------ */
-const app = express();
-app.use(express.json());
-app.use(
-	express.urlencoded({
-		extended: true,
-	}),
-);
-app.use(cors());
-app.use(morgan("dev"));
 
 /* -------------------- Use The Express Static Middleware ------------------- */
 app.use(express.static("public"));
