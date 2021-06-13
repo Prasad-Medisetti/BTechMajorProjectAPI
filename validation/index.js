@@ -7,6 +7,10 @@ const signupValidation = (data) => {
 		full_name: Joi.string().min(6).required(),
 		email: Joi.string().email().min(6).required(),
 		password: Joi.string().min(6).required(),
+		gender: Joi.string().valid("Male", "Female", "Others").required(),
+		designation: Joi.string()
+			.valid("Student", "Faculty", "Hod", "Principal")
+			.required(),
 	});
 
 	return schema.validate(data);
@@ -17,6 +21,9 @@ const signinValidation = (data) => {
 	const schema = Joi.object({
 		email: Joi.string().email().min(6).required(),
 		password: Joi.string().min(6).required(),
+		designation: Joi.string()
+			.valid("Student", "Faculty", "Hod", "Principal")
+			.required(),
 	});
 
 	return schema.validate(data);
