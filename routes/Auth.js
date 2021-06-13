@@ -5,16 +5,18 @@ const { signupValidation, signinValidation } = require("../validation");
 const User = require("../models/User");
 
 router.post("/signup", async (req, res) => {
+	console.log(JSON.stringify(req.body))
+
 	/* -------------- Validate The Data Before The User Is Created -------------- */
 	const { error } = signupValidation(req.body);
-
-	if (error) return res.status(400).send(error.details[0].message);
+	
+	if (error) return res.status(400).json({"error":error.details[0].message});
 
 	/* ----------- Checking If The User Alreafy Exist In The Database ----------- */
 	const emailExist = await User.findOne({ email: req.body.email });
 
 	if (emailExist)
-		return res.status(400).send("User with given email already exists");
+		return res.status(400).json({"error":"User with given email already exists"});
 
 	/* ---------------------------- Hashing Password ---------------------------- */
 	const salt = await bcrypt.genSalt(10);
@@ -38,20 +40,22 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/signin", async (req, res) => {
+	console.log(JSON.stringify(req.body))
+
 	/* -------------- Validate The Data Before The User Is Signed In -------------- */
 	const { error } = signinValidation(req.body);
 
-	if (error) return res.status(400).send(error.details[0].message);
+	if (error) return res.status(400).json({"error":error.details[0].message});
 
 	/* ----------- Checking If The Email Exists In The Database ----------- */
 	const user = await User.findOne({ email: req.body.email });
 
-	if (!user) return res.status(404).send("User does not exist...");
+	if (!user) return res.status(404).json({"error":"User does not exist..."});
 
 	/* ----------- Checking If The Email Exists In The Database ----------- */
 	const validPass = await bcrypt.compare(req.body.password, user.password);
 
-	if (!validPass) return res.status(401).send("Email or Password Incorrect...");
+	if (!validPass) return res.status(401).json({"error":"Email or Password Incorrect..."});
 
 	// Create and Assign a Token
 	const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
