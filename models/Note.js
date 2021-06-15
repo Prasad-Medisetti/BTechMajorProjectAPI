@@ -5,16 +5,18 @@ const noteSchema = new Schema(
 	{
 		title: {
 			type: String,
+			required: true,
 		},
 		details: {
 			type: String,
+			required: true,
 		},
 		category: {
 			type: String,
+			required: [true, 'Why no bacon?'],
+			enum: ["todo", "remainder"],
 		},
-	},
-	{
-		collection: "notes",
+		date: { type: Date, default: Date.now },
 	},
 );
 

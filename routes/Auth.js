@@ -40,7 +40,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/signin", async (req, res) => {
-	console.log(JSON.stringify(req.body))
+	//console.log(JSON.stringify(req.body))
 
 	/* -------------- Validate The Data Before The User Is Signed In -------------- */
 	const { error } = signinValidation(req.body);
@@ -58,12 +58,30 @@ router.post("/signin", async (req, res) => {
 	if (!validPass) return res.status(401).json({"error":"Email or Password Incorrect..."});
 
 	// Create and Assign a Token
-	const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, {
+	const token = jwt.sign({ _id: user._id, role:user.designation }, process.env.TOKEN_SECRET, {
 		expiresIn: "1d", // expires in 24 hours
 	});
 
 	let { _id, __v, password, ...userData } = user.toJSON();
 	res.header("authorization", `Bearer ${token}`).json({ token, ...userData });
 });
+
+router.get('/verify/:token', (req, res) => {
+	console.log('verify auth.js');
+	const {token} = req.params
+	
+	if (token) {
+		jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+			if (err) {
+				// console.log('err', err.message);
+				return res.send(err);
+			}
+			console.log('verfy usr: ', user)
+			res.send(user);
+		});
+	} else {
+		res.sendStatus(400);
+	}
+})
 
 module.exports = router;
