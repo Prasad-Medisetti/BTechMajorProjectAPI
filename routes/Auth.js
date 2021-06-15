@@ -58,7 +58,7 @@ router.post("/signin", async (req, res) => {
 	if (!validPass) return res.status(401).json({"error":"Email or Password Incorrect..."});
 
 	// Create and Assign a Token
-	const token = jwt.sign({ _id: user._id, role:user.designation }, process.env.TOKEN_SECRET, {
+	const token = await jwt.sign({ _id: user._id, role:user.designation }, process.env.TOKEN_SECRET, {
 		expiresIn: "1d", // expires in 24 hours
 	});
 

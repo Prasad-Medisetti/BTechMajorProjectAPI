@@ -19,7 +19,7 @@ const authenticateToken = (req, res, next) => {
 			next();
 		});
 	} else {
-		res.sendStatus(401).send("Access Denied...");
+		res.sendStatus(401);
 	}
 };
 

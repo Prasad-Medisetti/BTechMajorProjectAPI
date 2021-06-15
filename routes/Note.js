@@ -14,7 +14,7 @@ const schema = Joi.object({
 			.required(),
 	});
 
-router.get("/", verify, (req, res) => {	
+router.get("/", (req, res) => {	
 	const {user} = req;
 	// console.log('note.js get user ',user)
 	
