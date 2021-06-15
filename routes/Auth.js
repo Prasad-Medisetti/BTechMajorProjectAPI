@@ -60,14 +60,6 @@ router.post("/signin", async (req, res) => {
 	// Create and Assign a Token
 	const token = jwt.sign({ _id: user._id, role:user.designation }, process.env.TOKEN_SECRET, {
 		expiresIn: "1d", // expires in 24 hours
-		(err, user) => {
-			if (err) {
-				// console.log('err', err.message);
-				return res.send(err);
-			}
-			console.log('verfy usr: ', user)
-			res.send(user);
-		});
 	});
 
 	let { _id, __v, password, ...userData } = user.toJSON();
