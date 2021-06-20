@@ -40,7 +40,7 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/signin", async (req, res) => {
-	//console.log(JSON.stringify(req.body))
+	const data = req.body;
 
 	/* -------------- Validate The Data Before The User Is Signed In -------------- */
 	const { error } = signinValidation(req.body);
@@ -48,12 +48,13 @@ router.post("/signin", async (req, res) => {
 	if (error) return res.status(400).json({"error":error.details[0].message});
 
 	/* ----------- Checking If The Email Exists In The Database ----------- */
-	const user = await User.findOne({ email: req.body.email });
+	const user = await User.findOne({ email: data.email });
 
-	if (!user) return res.status(404).json({"error":"User does not exist..."});
+	if (user === null) return res.status(404).json({"error":"User does not exist..."});
+	if (data.designation !== user.designation) return res.status(401).json({"error":"Invalid User Account Type"});
 
-	/* ----------- Checking If The Email Exists In The Database ----------- */
-	const validPass = await bcrypt.compare(req.body.password, user.password);
+	/* ----------- Comparing the password with hashed password ----------- */
+	const validPass = await bcrypt.compare(data.password, user.password);
 
 	if (!validPass) return res.status(401).json({"error":"Email or Password Incorrect..."});
 
@@ -62,25 +63,38 @@ router.post("/signin", async (req, res) => {
 		expiresIn: "1d", // expires in 24 hours
 	});
 
-	let { _id, __v, password, ...userData } = user.toJSON();
-	res.header("authorization", `Bearer ${token}`).json({ token, ...userData });
+	let { password, ...userData } = user.toJSON();
+
+	res.header("authorization", `Bearer ${token}`).json({"message":"success", token, user: userData });
 });
 
-router.get('/verify/:token', (req, res) => {
+router.get('/user', async (req, res) => {
 	console.log('verify auth.js');
-	const {token} = req.params
-	
-	if (token) {
-		jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+
+	const authHeader = req.headers.authorization;
+	if (authHeader) {
+		const token = authHeader && authHeader.split(' ')[1];
+
+		if (token == null) return res.sendStatus(401)
+
+		jwt.verify(token, process.env.TOKEN_SECRET, (err, data) => {
 			if (err) {
 				// console.log('err', err.message);
-				return res.send(err);
+				return res.sendStatus(401).send(err);
 			}
-			console.log('verfy usr: ', user)
-			res.send(user);
+
+			User.findById(data._id, function (err, docs) {
+			    if (err){
+			        return res.sendStatus(401).send(err);
+			    }
+			    else{
+					console.log('verifyToken.js user ', docs);
+					res.send(docs);
+			    }
+			});
 		});
 	} else {
-		res.sendStatus(400);
+		res.sendStatus(401);
 	}
 })
 
