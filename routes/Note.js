@@ -10,13 +10,13 @@ const schema = Joi.object({
 		title: Joi.string().required(),
 		details: Joi.string().required(),
 		category: Joi.string()
-			.valid("todo", "remainder")
+			// .valid("todos", "remainders","work","money")
 			.required(),
 	});
 
-router.get("/", (req, res) => {	
+router.get("/",verify, (req, res) => {	
 	const {user} = req;
-	// console.log('note.js get user ',user)
+	// console.log('note.js get user ',req.user)
 	
 	if (!user) {
 		return res.sendStatus(403);
@@ -52,7 +52,7 @@ router.get("/:id", verify, (req, res) => {
 router.post("/", verify, (req, res) => {
 	const {user} = req;
 	const data = req.body;
-	// console.log('note.js post user ',user)
+	console.log('note.js post user ',data)
 	
 	if (!user) {
 		return res.sendStatus(403);

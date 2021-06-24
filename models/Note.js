@@ -13,8 +13,7 @@ const noteSchema = new Schema(
 		},
 		category: {
 			type: String,
-			required: [true, 'Why no bacon?'],
-			enum: ["todo", "remainder"],
+			required: true,
 		},
 		date: { type: Date, default: Date.now },
 	},
