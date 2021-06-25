@@ -24,8 +24,8 @@ router.get("/",verify, (req, res) => {
 
 	note.find({},(error, data) => {
 		if (error) {
-			console.log('find error ' ,error)
-			return next(error);
+			console.log('find all error ' ,error)
+			res.send(404);
 		} else {
 			res.json(data);
 		}
@@ -42,7 +42,8 @@ router.get("/:id", verify, (req, res) => {
 
 	note.findById(req.params.id, (error, data) => {
 		if (error) {
-			return next(error);
+			console.log('find by id error ' ,error)
+			res.send(404);
 		} else {
 			res.json(data);
 		}
@@ -65,7 +66,8 @@ router.post("/", verify, (req, res) => {
 	
 	note.create(data, (error, data) => {
 		if (error) {
-			console.log(error);
+			console.log('create new error ' ,error)
+			res.send(400);
 		} else {
 			console.log(data);
 			res.json(data);
@@ -91,7 +93,7 @@ router.patch("/:id", verify, (req, res) => {
 
 	note.findByIdAndUpdate(id, { ...data },{new: true}, (error, savedData) => {
 		if (error) {
-			console.log(error);
+			console.log('find by id and update error ' ,error)
 			res.send(404);
 		} else {
 			console.log(savedData);
@@ -110,7 +112,8 @@ router.delete("/:id", verify, (req, res) => {
 	
 	note.findByIdAndRemove(req.params.id, (error, deletedData) => {
 		if (error) {
-			return next(error);
+			console.log('find by id and remove error ' ,error)
+			res.send(404);
 		} else {
 			console.log("Removed User : ", deletedData);
 			res.status(200).json(deletedData);

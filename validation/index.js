@@ -4,7 +4,8 @@ const Joi = require("joi");
 /* --------------------------- Sign Up Validation --------------------------- */
 const signupValidation = (data) => {
 	const schema = Joi.object({
-		full_name: Joi.string().min(6).required(),
+		firstName: Joi.string().min(3).required(),
+		lastName: Joi.string().min(3).required(),
 		email: Joi.string().email().min(6).required(),
 		password: Joi.string().min(6).required(),
 		gender: Joi.string().valid("Male", "Female", "Others").required(),

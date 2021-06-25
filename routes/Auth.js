@@ -23,7 +23,8 @@ router.post("/signup", async (req, res) => {
 	const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
 	const user = new User({
-		full_name: req.body.full_name,
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
 		email: req.body.email,
 		password: hashedPassword,
 		gender: req.body.gender,
@@ -60,7 +61,7 @@ router.post("/signin", async (req, res) => {
 
 	// Create and Assign a Token
 	const token = await jwt.sign({ _id: user._id, role:user.designation }, process.env.TOKEN_SECRET, {
-		expiresIn: "1d", // expires in 24 hours
+		expiresIn: '1d', // expires in 24 hours
 	});
 
 	let { password, ...userData } = user.toJSON();
@@ -75,26 +76,28 @@ router.get('/user', async (req, res) => {
 	if (authHeader) {
 		const token = authHeader && authHeader.split(' ')[1];
 
-		if (token == null) return res.sendStatus(401)
+		if (token == null) return res.status(401).json({error:"Please login"});
 
 		jwt.verify(token, process.env.TOKEN_SECRET, (err, data) => {
 			if (err) {
 				// console.log('err', err.message);
-				return res.sendStatus(401).send(err);
+				console.log(err)
+				return res.status(401).json({error:"Your session expired, please login again"}).send(err);
 			}
 
 			User.findById(data._id, function (err, docs) {
 			    if (err){
-			        return res.sendStatus(401).send(err);
+			    	console.log(err)
+			        return res.status(401).send(err);
 			    }
 			    else{
 					console.log('verifyToken.js user ', docs);
-					res.send(docs);
+					return res.send(docs);
 			    }
 			});
 		});
 	} else {
-		res.sendStatus(401);
+		return res.sendStatus(401);
 	}
 })
 
