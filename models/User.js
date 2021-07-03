@@ -2,18 +2,43 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-	firstName: { type: String, required: true, min: 3, max: 255 },
-	lastName: { type: String, required: true, min: 3, max: 255 },
-	email: { type: String, unique: true, required: true, min: 6, max: 255 },
-	gender: { type: String, enum: ["Male", "Female", "Others"], required: true },
-	password: { type: String, required: true, min: 6, max: 1024 },
+	firstName: { 
+		type: String, 
+		required: true, 
+		min: 3, 
+		max: 255 
+	},
+	lastName: {
+		type: String, 
+		required: true, 
+		min: 3, 
+		max: 255 
+	},
+	email: {
+		type: String, 
+		unique: true, 
+		required: true,
+		min: 6, 
+		max: 255 
+	},
+	gender: { 
+		type: String, 
+		enum: ["Male", "Female", "Others"], 
+		required: true 
+	},
+	password: { 
+		type: String, 
+		required: true, 
+		min: 6, 
+		max: 1024 
+	},
 	designation: {
 		type: String,
 		enum: ["Student", "Faculty", "Hod", "Principal"],
 		required: true,
 	},
 	date: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 userSchema.methods.toJSON = function () {
 	var obj = this.toObject();

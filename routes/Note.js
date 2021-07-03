@@ -22,7 +22,7 @@ router.get("/",verify, (req, res) => {
 		return res.sendStatus(403);
 	}
 
-	note.find({},(error, data) => {
+	note.find({}, null, {sort: {updatedAt: -1}},(error, data) => {
 		if (error) {
 			console.log('find all error ' ,error)
 			res.send(404);
@@ -79,8 +79,9 @@ router.post("/", verify, (req, res) => {
 router.patch("/:id", verify, (req, res) => {
 	const {user} = req;
 	const {id} = req.params;
-	const data = req.body;
 	// console.log('note.js PUTById user ',user)
+	const data = req.body;
+	console.log(req.body)
 	
 	if (!user) {
 		return res.sendStatus(403);
@@ -90,8 +91,8 @@ router.patch("/:id", verify, (req, res) => {
 	const { error } = schema.validate(data);
 
 	if (error) return res.status(400).json({"error":error.details[0].message});
-
-	note.findByIdAndUpdate(id, { ...data },{new: true}, (error, savedData) => {
+	
+	note.findByIdAndUpdate(id, { ...data }, {new: true}, (error, savedData) => {
 		if (error) {
 			console.log('find by id and update error ' ,error)
 			res.send(404);
