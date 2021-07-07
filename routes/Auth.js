@@ -1,15 +1,61 @@
 const router = require("express").Router(),
 	bcrypt = require("bcryptjs"),
 	jwt = require("jsonwebtoken");
+
 const { signupValidation, signinValidation } = require("../validation");
 const User = require("../models/User");
+const verify = require("./verifyToken");
+
+const isValidUser = (user) => {
+		let valid = false;
+
+		switch (user.designation) {
+			case "Student":
+				if (
+					user.branch &&
+					user.rollNo &&
+					user.section &&
+					user.academicYear &&
+					user.collegeName
+				) {
+					valid = true;
+				} else {
+					valid = false;
+				}
+				break;
+			case "Faculty":
+				if (user.empId && user.branch && user.collegeName) {
+					valid = true;
+				} else {
+					valid = false;
+				}
+				break;
+			case "Hod":
+				if (user.empId && user.branch && user.collegeName) {
+					valid = true;
+				} else {
+					valid = false;
+				}
+				break;
+			case "Principal":
+				if (user.empId && user.collegeName) {
+					valid = true;
+				} else {
+					valid = false;
+				}
+				break;
+		}
+
+		return valid;
+	};
+
 
 router.post("/signup", async (req, res) => {
 	console.log(JSON.stringify(req.body))
 
 	/* -------------- Validate The Data Before The User Is Created -------------- */
 	const { error } = signupValidation(req.body);
-	
+
 	if (error) return res.status(400).json({"error":error.details[0].message});
 
 	/* ----------- Checking If The User Alreafy Exist In The Database ----------- */
@@ -69,36 +115,49 @@ router.post("/signin", async (req, res) => {
 	res.header("authorization", `Bearer ${token}`).json({"message":"success", token, user: userData });
 });
 
-router.get('/user', async (req, res) => {
-	console.log('verify auth.js');
+router.get('/user', verify, async (req, res) => {
+	const {user} = req;
+	// console.log('note.js get user ',req.user)
 
-	const authHeader = req.headers.authorization;
-	if (authHeader) {
-		const token = authHeader && authHeader.split(' ')[1];
-
-		if (token == null) return res.status(401).json({error:"Please login"});
-
-		jwt.verify(token, process.env.TOKEN_SECRET, (err, data) => {
-			if (err) {
-				// console.log('err', err.message);
-				console.log(err)
-				return res.status(401).json({error:"Your session expired, please login again"}).send(err);
-			}
-
-			User.findById(data._id, function (err, docs) {
-			    if (err){
-			    	console.log(err)
-			        return res.status(401).send(err);
-			    }
-			    else{
-					console.log('verifyToken.js user ', docs);
-					return res.send(docs);
-			    }
-			});
-		});
-	} else {
-		return res.sendStatus(401);
+	if (!user) {
+		// return res.sendStatus(403);
+		return
 	}
+
+	User.findById(user._id, function (err, docs) {
+	    if (err){
+	    	console.log(err)
+	        return res.status(401).send(err);
+	    }
+	    else{
+			console.log('verifyToken.js user ', docs);
+			return res.send(docs);
+	    }
+	});
 })
+
+router.patch("/user/:id", verify, async (req, res) => {
+	const {user} = req;
+	const {id} = req.params;
+	const data = req.body;
+
+	if (!user) {
+		// return res.sendStatus(403);
+		return
+	}
+	if (isValidUser(data)===false) return res.status(400).json({"error":'All fields required'})
+
+	console.log({...data})
+
+	User.findByIdAndUpdate(id, { ...data }, {new: true}, (error, savedData) => {
+		if (error) {
+			console.log('find by id and update error ' ,error)
+			res.send(404);
+		} else {
+			console.log(savedData);
+			res.json(savedData);
+		}
+	});
+});
 
 module.exports = router;

@@ -48,7 +48,9 @@ mongoose
 
 /* -------------------- Use The Express Static Middleware ------------------- */
 app.use(express.static("public"));
-app.use("/static", express.static(path.join(__dirname, "public")));
+
+// Setting up the express static directory
+app.use("/static", express.static(path.join(__dirname, "./public")));
 
 /* ------------------------------- Routes ------------------------------ */
 app.get("/", (req, res) => {

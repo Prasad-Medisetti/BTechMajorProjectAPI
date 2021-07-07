@@ -5,21 +5,21 @@ const authenticateToken = (req, res, next) => {
 	if (authHeader) {
 		const token = authHeader && authHeader.split(' ')[1];
 
-		if (token == null) return res.sendStatus(401)
+		if (token == null) return res.status(401).json({error:"Please login"}).send(err);
 
 		jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
 			if (err) {
-				console.log('err', err.message);
+				// console.log('err', err.message);
 				return res.status(403).send(err.message);
 			}
 			if (!user) {
-				return res.status(404).json({error:"Your session expired, please login again"});
+				return res.status(404).json({error:"Your session expired, please login"});
 			}
 			req.user = user;
 			// console.log('verifyToken.js req ',req.user)
 		});
 	} else {
-		res.sendStatus(401);
+		res.sendStatus(403);
 	}
 
 	next();

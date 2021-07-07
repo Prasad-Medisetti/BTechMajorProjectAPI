@@ -1,43 +1,47 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-	firstName: { 
-		type: String, 
-		required: true, 
-		min: 3, 
-		max: 255 
+const userSchema = new mongoose.Schema({
+	firstName: {
+		type: String,
+		required: true,
+		min: 3,
+		max: 255
 	},
 	lastName: {
-		type: String, 
-		required: true, 
-		min: 3, 
-		max: 255 
+		type: String,
+		required: true,
+		min: 3,
+		max: 255
 	},
 	email: {
-		type: String, 
-		unique: true, 
+		type: String,
+		unique: true,
 		required: true,
-		min: 6, 
-		max: 255 
+		min: 6,
+		max: 255
 	},
-	gender: { 
-		type: String, 
-		enum: ["Male", "Female", "Others"], 
-		required: true 
+	gender: {
+		type: String,
+		enum: ["Male", "Female", "Others"],
+		required: true
 	},
-	password: { 
-		type: String, 
-		required: true, 
-		min: 6, 
-		max: 1024 
+	password: {
+		type: String,
+		required: true,
+		min: 6,
+		max: 1024
 	},
 	designation: {
 		type: String,
 		enum: ["Student", "Faculty", "Hod", "Principal"],
 		required: true,
 	},
-	date: { type: Date, default: Date.now },
+	branch: {	type: String },
+	rollNo: {	type: String },
+	section: {	type: String },
+	academicYear: {	type: String },
+	collegeName: {	type: String },
+	empId: {	type: String },
 }, { timestamps: true });
 
 userSchema.methods.toJSON = function () {
@@ -45,4 +49,5 @@ userSchema.methods.toJSON = function () {
 	delete obj.password;
 	return obj;
 };
+
 module.exports = mongoose.model("User", userSchema);
