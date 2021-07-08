@@ -3,18 +3,51 @@ const path = require("path");
 
 const noteSchema = new mongoose.Schema({
 	title: {
-	type: String,
+		type: String,
 		required: true,
 	},
 	details: {
 		type: String,
 		required: true,
 	},
-	category: {
-		type: String,
+	postedBy: {
+		type: Object,
+	},
+	isPrivate: {
+		type: Boolean,
+    default: false,
 		required: true,
 	},
-	date: { type: Date, default: Date.now },
+  access: {
+		type: Object,
+    student: {
+      type: Boolean,
+	    default: false
+    },
+    faculty: {
+      type: Boolean,
+	    default: false
+    },
+    hod: {
+      type: Boolean,
+	    default: false
+    }
+  },
+	files: {
+    type: Array
+  },
+  urlList: {
+    type: Array
+  },
+	author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
+	// category: {
+	// 	type: String,
+	// 	required: true,
+	// },
+
 }, { timestamps: true });
 
 module.exports = mongoose.model("Note", noteSchema);

@@ -36,6 +36,15 @@ const userSchema = new mongoose.Schema({
 		enum: ["Student", "Faculty", "Hod", "Principal"],
 		required: true,
 	},
+	role: {
+    type: String,
+    default: "user",
+    enum: ["user", "admin", "superadmin"]
+  },
+	posts: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post'
+  }],
 	branch: {	type: String },
 	rollNo: {	type: String },
 	section: {	type: String },

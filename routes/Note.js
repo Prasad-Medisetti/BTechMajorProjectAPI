@@ -9,7 +9,11 @@ const verify = require("./verifyToken");
 const schema = Joi.object({
 		title: Joi.string().required(),
 		details: Joi.string().required(),
-		category: Joi.string().required(), // .valid("todos", "remainders","work","money")
+		isPrivate: Joi.boolean().required(), // .valid("todos", "remainders","work","money")
+		access: Joi.object().required(),
+		postedBy: Joi.object(),
+		files:Joi.array(),
+		urlList:Joi.array()
 	});
 
 router.get("/",verify, (req, res) => {
@@ -83,12 +87,14 @@ router.patch("/:id", verify, (req, res) => {
 	const {id} = req.params;
 	// console.log('note.js PUTById user ',user)
 	const data = req.body;
-	console.log(req.body)
+	console.log(user._id, data.postedBy._id)
 
 	if (!user) {
 		// return res.sendStatus(403);
 		return
 	}
+
+	if (user._id !== data.postedBy._id) return res.status(403).json({"error":"You cannot change other users post..."});
 
 	/* -------------- Validate The Data -------------- */
 	const { error } = schema.validate(data);
