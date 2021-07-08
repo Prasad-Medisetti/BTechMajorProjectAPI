@@ -5,7 +5,7 @@ const authenticateToken = (req, res, next) => {
 	if (authHeader) {
 		const token = authHeader && authHeader.split(' ')[1];
 
-		if (token == null) return res.status(401).json({error:"Please login"}).send(err);
+		if (token == null) return res.status(401).json({error:"Please login"});
 
 		jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
 			if (err) {
