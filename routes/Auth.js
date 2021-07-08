@@ -70,6 +70,7 @@ router.post("/signup", async (req, res) => {
 
 	let role="user";
 	if (req.body.designation==="Hod") role="admin";
+	if (req.body.designation==="Faculty") role="admin";
 	if (req.body.designation==="Principal") role="admin";
 
 	const user = new User({
