@@ -17,7 +17,7 @@ const schema = Joi.object({
 
 router.get("/", verify, (req, res) => {
 	const { user } = req;
-	// console.log('note.js get user ',req.user)
+	// console.log("note.js get user ", req.user);
 
 	if (!user) {
 		// return res.sendStatus(403);
@@ -29,7 +29,36 @@ router.get("/", verify, (req, res) => {
 			console.log("find all error ", error);
 			res.send(404);
 		} else {
-			res.json(data);
+			let newData = data.filter((note) => {
+				if (
+					note.isPrivate === false ||
+					(note.isPrivate === true &&
+						note.access.student &&
+						note.access.hod &&
+						note.faculty)
+				)
+					return note;
+				else if (
+					user.designation === "Student" &&
+					note.isPrivate &&
+					note.access.student === true
+				)
+					return note;
+				else if (
+					user.designation === "Faculty" &&
+					note.isPrivate &&
+					note.access.faculty === true
+				)
+					return note;
+				else if (
+					user.designation === "Hod" &&
+					note.isPrivate &&
+					note.access.hod === true
+				)
+					return note;
+				else return;
+			});
+			res.json(newData);
 		}
 	});
 });
@@ -68,17 +97,17 @@ router.post("/", verify, (req, res) => {
 	const { error } = schema.validate(data);
 
 	if (error) return res.status(400).json({ error: error.details[0].message });
-	console.log(req.body, req.files)
+	console.log(req.body, req.files);
 
-	// note.create(data, (error, data) => {
-	// 	if (error) {
-	// 		console.log("create new error ", error);
-	// 		res.send(400);
-	// 	} else {
-	// 		console.log(data);
-	// 		res.json(data);
-	// 	}
-	// });
+	note.create(data, (error, data) => {
+		if (error) {
+			console.log("create new error ", error);
+			res.send(400);
+		} else {
+			console.log(data);
+			res.json(data);
+		}
+	});
 });
 
 // Update note
