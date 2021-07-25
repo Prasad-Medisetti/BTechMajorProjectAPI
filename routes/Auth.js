@@ -143,7 +143,7 @@ router.get("/user", verify, async (req, res) => {
 	User.findById(user._id, function (err, docs) {
 		if (err) {
 			console.log(err);
-			return res.status(401).send(err);
+			return res.status(401).send({ error });
 		} else {
 			console.log("verifyToken.js user ", docs);
 			return res.send(docs);

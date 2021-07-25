@@ -27,7 +27,7 @@ router.get("/", verify, (req, res) => {
 	note.find({}, null, { sort: { updatedAt: -1 } }, (error, data) => {
 		if (error) {
 			console.log("find all error ", error);
-			res.send(404);
+			res.status(500).send({ message: `Unexpected error occurred!`, error });
 		} else {
 			let newData = data.filter((note) => {
 				if (
@@ -56,6 +56,8 @@ router.get("/", verify, (req, res) => {
 					note.access.hod === true
 				)
 					return note;
+				else if (user._id===note.postedBy._id)
+					return note;
 				else return;
 			});
 			res.json(newData);
@@ -75,7 +77,7 @@ router.get("/:id", verify, (req, res) => {
 	note.findById(req.params.id, (error, data) => {
 		if (error) {
 			console.log("find by id error ", error);
-			res.sendStatus(404);
+			res.status(500).send({ message: `Unexpected error occurred!`, error });
 		} else {
 			if (data == null) return res.sendStatus(404);
 			res.json(data);
@@ -102,7 +104,7 @@ router.post("/", verify, (req, res) => {
 	note.create(data, (error, data) => {
 		if (error) {
 			console.log("create new error ", error);
-			res.send(400);
+			res.status(500).send({ message: `Unexpected error occurred!`, error });
 		} else {
 			console.log(data);
 			res.json(data);
@@ -136,7 +138,7 @@ router.patch("/:id", verify, (req, res) => {
 	note.findByIdAndUpdate(id, { ...data }, { new: true }, (error, savedData) => {
 		if (error) {
 			console.log("find by id and update error ", error);
-			res.send(404);
+			res.status(500).send({ message: `Unexpected error occurred!`, error });
 		} else {
 			console.log(savedData);
 			res.json(savedData);
@@ -156,8 +158,8 @@ router.delete("/:id", verify, (req, res) => {
 	note.findByIdAndRemove(req.params.id, (error, deletedData) => {
 		if (error) {
 			console.log("find by id and remove error ", error);
-			res.send(404);
-		} else {
+			res.status(500).send({ message: `Unexpected error occurred!`, error });
+			} else {
 			console.log("Removed Note : ", deletedData);
 			res.status(200).json(deletedData);
 		}
