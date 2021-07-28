@@ -91,34 +91,13 @@ app.get("/api/sendmail/:email", (req, res) => {
 	request
 		.then((result) => {
 			console.log(result.body);
+			res.send(result.body);
 		})
 		.catch((err) => {
-			console.log(err.statusCode);
+			console.log(err)
+			res.status(500).send({ message: `Unexpected error occurred!`, err });
 		});
 
-	// var mailOptions = {
-	// 	from: "Academic Bulletin Board",
-	// 	to: email,
-	// 	subject: "Sending Email using Node.js",
-	// 	html: emailHTMLTemplate("User Name Here"), // html body
-	// 	// forceEmbeddedImages: true,
-	// 	attachments: [
-	// 		{
-	// 			// use URL as an attachment
-	// 			cid: "newMessageImage",
-	// 			// filename: "new_message.svg",
-	// 			path: "https://raw.githubusercontent.com/Prasad-Medisetti/BTechMajorProject/build/src/assets/images/undraw_new_message_2gfk.png",
-	// 			// path: "https://raw.githubusercontent.com/Prasad-Medisetti/BTechMajorProject/build/public/logo512.png",
-	// 		},
-	// 		{
-	// 			// use URL as an attachment
-	// 			cid: "user_icon",
-	// 			// filename: "user.svg",
-	// 			path: "https://firebasestorage.googleapis.com/v0/b/academic-bulletin-board.appspot.com/o/assets%2F1287507_user_account_avatar_human_people_icon.png?alt=media&token=bb212c9b-437e-4cff-91e3-4d1c5db95401",
-	// 			// path: "https://assets.dryicons.com/uploads/icon/svg/5611/31e5c56c-2db5-4083-95be-9fbbea0eb2c2.svg",
-	// 		},
-	// 	],
-	// };
 
 	// Mailer.sendMail(mailOptions, (err, info) => {
 	// 	if (err) {
@@ -140,10 +119,7 @@ app.post("/api/uploads", (req, res) => {
 	uploadFiles(req, res, (err) => {
 		if (err instanceof multer.MulterError) {
 			// A Multer error occurred when uploading.
-			res
-				.status(500)
-				.send({ message: `${err.message}` })
-				.end();
+			res.status(500).send({ message: `Unexpected error occurred!`, err });
 			return;
 		} else if (err) {
 			// An unknown error occurred when uploading.

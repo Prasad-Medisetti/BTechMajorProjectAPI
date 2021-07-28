@@ -170,7 +170,7 @@ router.get("/user/:id", async (req, res) => {
 			console.log(err);
 			return res.status(401).send(err);
 		} else {
-			console.log("verifyToken.js user ", docs);
+			// console.log("verifyToken.js user ", docs);
 			return res.send(docs);
 		}
 	});

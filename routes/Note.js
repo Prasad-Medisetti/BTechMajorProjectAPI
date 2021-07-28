@@ -10,6 +10,7 @@ const schema = Joi.object({
 	details: Joi.string().required(),
 	isPrivate: Joi.boolean().required(), // .valid("todos", "remainders","work","money")
 	access: Joi.object().required(),
+	sendEmailAlerts: Joi.boolean().required(),
 	postedBy: Joi.object(),
 	files: Joi.array(),
 	urlList: Joi.array(),
@@ -56,8 +57,7 @@ router.get("/", verify, (req, res) => {
 					note.access.hod === true
 				)
 					return note;
-				else if (user._id===note.postedBy._id)
-					return note;
+				else if (user._id === note.postedBy._id) return note;
 				else return;
 			});
 			res.json(newData);
@@ -88,7 +88,7 @@ router.get("/:id", verify, (req, res) => {
 router.post("/", verify, (req, res) => {
 	const { user } = req;
 	const data = req.body;
-	console.log("note.js post user ", data);
+	// console.log("note.js post user ", data);
 
 	if (!user) {
 		// return res.sendStatus(403);
@@ -159,7 +159,7 @@ router.delete("/:id", verify, (req, res) => {
 		if (error) {
 			console.log("find by id and remove error ", error);
 			res.status(500).send({ message: `Unexpected error occurred!`, error });
-			} else {
+		} else {
 			console.log("Removed Note : ", deletedData);
 			res.status(200).json(deletedData);
 		}
