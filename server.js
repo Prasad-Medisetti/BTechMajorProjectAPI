@@ -78,36 +78,39 @@ app.get("/api/sendmail/:email", (req, res) => {
 	const { email } = req.params;
 	console.log(req.params);
 
-	const request = mailjet.post("send").request({
-		FromEmail: "academicbulletinboard@gmail.com",
-		FromName: "Academic Bulletin Board",
-		Subject: "Your email flight plan!",
-		"Text-part":
-			"Dear passenger, welcome to Mailjet! May the delivery force be with you!",
-		"Html-part":
-			'<h3>Dear passenger, welcome to <a href="https://www.mailjet.com/">Mailjet</a>!<br />May the delivery force be with you!',
-		Recipients: [{ Email: email }],
-	});
+	const request = mailjet
+		.post("send", {'version': 'v3.1'})
+		.request({
+			"Messages":[
+				{
+					"From": {
+						"Email": "admin@academicbulletinboard.web.app",
+						"Name": "Test"
+					},
+					"To": [
+						{
+							"Email": email,
+							"Name": "passenger 1"
+						}
+					],
+					"TemplateID": 3040762,
+					"TemplateLanguage": true,
+					"Subject": "You have a new message!",
+					"Variables": {
+				      "name": "Prasad"
+				    }
+				}
+			]
+		})
 	request
 		.then((result) => {
-			console.log(result.body);
+			console.log(result.body)
 			res.send(result.body);
 		})
 		.catch((err) => {
-			console.log(err)
+			console.log(err.statusCode)
 			res.status(500).send({ message: `Unexpected error occurred!`, err });
-		});
-
-
-	// Mailer.sendMail(mailOptions, (err, info) => {
-	// 	if (err) {
-	// 		console.log(err);
-	// 		res.send(err);
-	// 	} else {
-	// 		console.log(info);
-	// 		res.send(info);
-	// 	}
-	// });
+		})
 });
 
 app.get("/api/uploads", (req, res) => {
