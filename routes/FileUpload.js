@@ -15,14 +15,14 @@ let allowedFiles = function (req, file, cb) {
 	// Accept images only
 	if (
 		!file.originalname.match(
-			/\.(pdf|doc|txt|jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/,
+			/\.(pdf|doc|docx|pptx|ppt|txt|jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/,
 		)
 	) {
 		req.fileValidationError =
-			"Only pdf | doc | txt | jpg | JPG | jpeg | JPEG | png | PNG | gif | GIF file type are allowed!";
+			"Only pdf | doc | docx | pptx | ppt | txt | jpg | JPG | jpeg | JPEG | png | PNG | gif | GIF file type are allowed!";
 		return cb(
 			new Error(
-				"Only pdf | doc | txt | jpg | JPG | jpeg | JPEG | png | PNG | gif | GIF file type  are allowed!",
+				"Only pdf | doc | docx | pptx | ppt | txt | jpg | JPG | jpeg | JPEG | png | PNG | gif | GIF file type  are allowed!",
 			),
 			false,
 		);
