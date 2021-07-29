@@ -124,12 +124,12 @@ app.post("/api/uploads", (req, res) => {
 		} else if (err) {
 			// An unknown error occurred when uploading.
 			if (err.name == "ExtensionError") {
-				res.status(413).send({ message: err.message }).end();
+				res.status(413).send({ message: err.message, err }).end();
 			} else {
 				res
 					.status(500)
 					.send({
-						message: `unknown uploading error: ${err.message}`,
+						message: `unknown uploading error: ${err.message}`,err,
 					})
 					.end();
 			}
