@@ -1,6 +1,7 @@
 const express = require("express"),
 	router = express.Router(),
-	Joi = require("joi");
+	Joi = require("joi"),
+	fs = require("fs");
 
 const note = require("../models/Note");
 const verify = require("./verifyToken");
@@ -161,6 +162,10 @@ router.delete("/:id", verify, (req, res) => {
 			res.status(500).send({ message: `Unexpected error occurred!`, error });
 		} else {
 			console.log("Removed Note : ", deletedData);
+			// deletedData.files.map((file) => {
+			// 	const DIR = "../uploads/files";
+			// 	fs.unlinkSync(DIR + "/" + file.filename);
+			// })
 			res.status(200).json(deletedData);
 		}
 	});
