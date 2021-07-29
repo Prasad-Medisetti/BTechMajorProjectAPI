@@ -143,7 +143,7 @@ router.post("/", verify, async (req, res) => {
 							else return;
 						})
 
-						let userName = `${userInfo.firstName} ${userInfo.lastName}`
+						let userName = `${userInfo.firstName} ${userInfo.lastName}, ${userInfo.designation}`
 						const request = mailjet
 							.post("send", {'version': 'v3.1'})
 							.request({
@@ -226,7 +226,7 @@ router.patch("/:id", verify, async (req, res) => {
 							else return;
 						})
 
-						let userName = `${userInfo.firstName} ${userInfo.lastName}`
+						let userName = `${userInfo.firstName} ${userInfo.lastName}, ${userInfo.designation}`
 						const request = mailjet
 							.post("send", {'version': 'v3.1'})
 							.request({
