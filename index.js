@@ -198,3 +198,7 @@ const server = app.listen(port, () => {
 // app.use((req, res, next) => {
 // 	next(createError(404));
 // });
+
+
+// Export the Express API
+module.exports = app;
