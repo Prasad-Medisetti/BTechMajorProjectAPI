@@ -90,7 +90,8 @@ app.get("/api/sendmail/:email", (req, res) => {
 			"Messages":[
 				{
 					"From": {
-						"Email": "admin@academicbulletinboard.web.app",
+						// "Email": "admin@academicbulletinboard.web.app",
+						"Email": process.env.MJ_EMAIL,
 						"Name": "Test"
 					},
 					"To": [
@@ -103,7 +104,7 @@ app.get("/api/sendmail/:email", (req, res) => {
 					"TemplateLanguage": true,
 					"Subject": "You have a new message!",
 					"Variables": {
-				      "name": "Prasad"
+				      "name": "P M"
 				    }
 				}
 			]
